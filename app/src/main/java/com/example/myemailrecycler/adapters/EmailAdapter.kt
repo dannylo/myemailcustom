@@ -6,9 +6,11 @@ import android.graphics.Typeface.BOLD
 import android.graphics.Typeface.NORMAL
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myemailrecycler.R
@@ -29,6 +31,7 @@ class EmailAdapter(val emails: MutableList<Email>) :RecyclerView.Adapter<EmailAd
     }
 
     inner class EmailViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+
         fun bind(email: Email){
             with(email) {
                 itemView.email_icon.text = user.first().toString()
@@ -36,6 +39,7 @@ class EmailAdapter(val emails: MutableList<Email>) :RecyclerView.Adapter<EmailAd
 
                 itemView.user.text = user
                 itemView.subject.text = subject
+                itemView.preview.text = preview
                 itemView.date.text = date
 
                 itemView.user.setTypeface(Typeface.DEFAULT, if (unread) BOLD else NORMAL)
@@ -48,6 +52,7 @@ class EmailAdapter(val emails: MutableList<Email>) :RecyclerView.Adapter<EmailAd
         }
     }
 }
+
 fun View.oval(@ColorInt color: Int): ShapeDrawable {
     val oval = ShapeDrawable(OvalShape())
     with(oval){
