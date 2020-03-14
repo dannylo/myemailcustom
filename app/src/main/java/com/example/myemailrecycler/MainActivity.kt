@@ -3,6 +3,7 @@ package com.example.myemailrecycler
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myemailrecycler.adapters.EmailAdapter
 import com.example.myemailrecycler.models.EmailBuilder
@@ -31,6 +32,13 @@ class MainActivity : AppCompatActivity() {
             recycler_view_main.scrollToPosition(0)
             Toast.makeText(this, "Random e-mail succefully genereted.", Toast.LENGTH_SHORT).show()
         }
+
+        val helper = ItemTouchHelper(
+            com.example.myemailrecycler.helpers.ItemTouchHelper(
+                ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT, adapter)
+            )
+
+        helper.attachToRecyclerView(recycler_view_main)
     }
 
     fun addEmail(){
