@@ -30,6 +30,8 @@ class EmailAdapter(val emails: MutableList<Email>) :RecyclerView.Adapter<EmailAd
         holder.bind(emails[position])
     }
 
+    fun  
+
     inner class EmailViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
         fun bind(email: Email){

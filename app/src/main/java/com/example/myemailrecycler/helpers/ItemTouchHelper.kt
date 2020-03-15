@@ -1,5 +1,6 @@
 package com.example.myemailrecycler.helpers
 
+import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myemailrecycler.adapters.EmailAdapter
@@ -9,7 +10,8 @@ import java.util.*
 class ItemTouchHelper(var dragDirs: Int, var swipeDirs: Int, var adapter: EmailAdapter): ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        adapter.emails.removeAt(viewHolder.adapterPosition)
+        adapter.notifyItemRemoved(viewHolder.adapterPosition)
     }
 
     override fun onMove(
