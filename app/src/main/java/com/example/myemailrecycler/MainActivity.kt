@@ -2,7 +2,11 @@ package com.example.myemailrecycler
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.view.ActionMode
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myemailrecycler.adapters.EmailAdapter
@@ -11,12 +15,14 @@ import com.example.myemailrecycler.models.email
 import com.example.myemailrecycler.models.generateFakeEmails
 import com.mooveit.library.Fakeit
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.FieldPosition
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: EmailAdapter;
+    private var actionMode: ActionMode? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +33,15 @@ class MainActivity : AppCompatActivity() {
         recycler_view_main.adapter = adapter
         recycler_view_main.layoutManager = LinearLayoutManager(this);
 
+        adapter.onItemClick = {
+            enableActionMode(it)
+        }
+
+        adapter.onItemClickLong = {
+            enableActionMode(it)
+
+        }
+
         fab.setOnClickListener{
             addEmail()
             recycler_view_main.scrollToPosition(0)
@@ -35,12 +50,52 @@ class MainActivity : AppCompatActivity() {
 
         val helper = ItemTouchHelper(
             com.example.myemailrecycler.helpers.ItemTouchHelper(
-                ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT, adapter)
+                0, ItemTouchHelper.LEFT, adapter)
             )
 
         helper.attachToRecyclerView(recycler_view_main)
     }
 
+    private fun enableActionMode(position: Int){
+        if(actionMode == null){
+            actionMode = startSupportActionMode(object: ActionMode.Callback {
+                override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+                    if(item?.itemId == R.id.action_delete){
+                        adapter.deleteEmails()
+                        mode?.finish()
+                        return true
+                    }
+                    return false
+                }
+
+                override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                    mode?.menuInflater?.inflate(R.menu.menu_delete, menu)
+                    return true
+                }
+
+                override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+                    return false
+                }
+
+                override fun onDestroyActionMode(mode: ActionMode?) {
+                    adapter.selectedItems.clear()
+                    adapter.emails
+                        .filter { it.selected }
+                        .forEach{ it.selected = false}
+                    adapter.notifyDataSetChanged()
+                    actionMode = null
+                }
+            })
+        }
+        adapter.toggleSelection(position)
+        val size = adapter.selectedItems.size()
+        if(size == 0){
+            actionMode?.finish()
+        } else {
+            actionMode?.title = "$size"
+            actionMode?.invalidate()
+        }
+    }
     fun addEmail(){
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR")).parse(
             Fakeit.dateTime().dateFormatter()
