@@ -1,5 +1,6 @@
 package com.example.myemailrecycler
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.view.ActionMode
+import androidx.core.util.isEmpty
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myemailrecycler.adapters.EmailAdapter
@@ -34,7 +36,15 @@ class MainActivity : AppCompatActivity() {
         recycler_view_main.layoutManager = LinearLayoutManager(this);
 
         adapter.onItemClick = {
-            enableActionMode(it)
+            if (adapter.selectedItems.isEmpty()){
+                var intent = Intent(this, ShowActivity::class.java)
+                val bundle = Bundle()
+                bundle.putParcelable("EMAIL", adapter.emails.get(it))
+                intent = intent.putExtras(bundle)
+                startActivity(intent)
+            } else {
+                enableActionMode(it)
+            }
         }
 
         adapter.onItemClickLong = {

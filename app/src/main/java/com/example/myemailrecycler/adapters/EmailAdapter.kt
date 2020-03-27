@@ -42,9 +42,7 @@ class EmailAdapter(val emails: MutableList<Email>) :RecyclerView.Adapter<EmailAd
     override fun onBindViewHolder(holder: EmailViewHolder, position: Int) {
         holder.bind(emails[position])
         holder.itemView.setOnClickListener {
-            if(selectedItems.isNotEmpty()) {
-                onItemClick?.invoke(position)
-            }
+            onItemClick?.invoke(position)
         }
         holder.itemView.setOnLongClickListener{
             onItemClickLong?.invoke(position)
@@ -83,7 +81,7 @@ class EmailAdapter(val emails: MutableList<Email>) :RecyclerView.Adapter<EmailAd
 
         fun bind(email: Email){
             with(email) {
-                itemView.email_icon.text = user.first().toString()
+                itemView.email_icon.text = user?.first().toString()
                 itemView.email_icon.background = itemView.oval(Color.rgb(user.hashCode(), user.hashCode()/2, 0))
 
                 itemView.user.text = user

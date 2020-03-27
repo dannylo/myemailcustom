@@ -1,14 +1,53 @@
 package com.example.myemailrecycler.models
 
+import android.os.Parcel
+import android.os.Parcelable
+import java.io.Serializable
+
 data class Email(
-    val user: String,
-    val subject: String,
-    val preview: String,
-    val date: String,
+    val user: String?,
+    val subject: String?,
+    val preview: String?,
+    val date: String?,
     val stared: Boolean,
     val unread: Boolean,
     var selected: Boolean
-)
+) : Parcelable {
+    constructor(parcel: Parcel) : this(
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte(),
+        parcel.readByte() != 0.toByte()
+    ) {
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(user)
+        parcel.writeString(subject)
+        parcel.writeString(preview)
+        parcel.writeString(date)
+        parcel.writeByte(if (stared) 1 else 0)
+        parcel.writeByte(if (unread) 1 else 0)
+        parcel.writeByte(if (selected) 1 else 0)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<Email> {
+        override fun createFromParcel(parcel: Parcel): Email {
+            return Email(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Email?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
 
 class EmailBuilder{
 
