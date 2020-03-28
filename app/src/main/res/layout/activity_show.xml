@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/subject_show"
-            android:textSize="28sp"
+            android:textSize="23sp"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
         android:layout_below="@id/header_show"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="12dp"
         >
 
         <TextView
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Facebook"
-            android:textSize="26sp"
+            android:textSize="24sp"
             android:paddingStart="10dp"
             android:textStyle="bold"
             android:layout_toRightOf="@id/icon_show" />
@@ -91,7 +91,7 @@
             android:layout_height="wrap_content"
             android:text="23 de Fev"
             android:layout_marginTop="6dp"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:layout_toRightOf="@id/name_show" />
 
     </RelativeLayout>
@@ -101,7 +101,7 @@
         android:id="@+id/content_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="26sp"
+        android:textSize="23sp"
         android:layout_marginStart="10dp"
         android:layout_below="@id/author_show"
         android:text="TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT TEXT "

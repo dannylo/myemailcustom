@@ -19,6 +19,7 @@ class ShowActivity : AppCompatActivity() {
         setContentView(R.layout.activity_show)
         enableActionMode()
 
+
         val email = intent.extras?.getParcelable<Email>("EMAIL")
 
         icon_show.text = email?.user?.first().toString()
@@ -34,7 +35,17 @@ class ShowActivity : AppCompatActivity() {
         if(actionMode == null){
             actionMode = startSupportActionMode(object: ActionMode.Callback {
                 override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-                    return false
+                    when(item?.itemId){
+                        R.id.homeAsUp -> {
+                            onBackPressed()
+                            finish()
+                        }
+
+                        R.id.action_delete -> {
+                            DeleteConfirmDialog().show(supportFragmentManager, "CONFIRM_DELETE")
+                        }
+                    }
+                    return true
                 }
 
                 override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
