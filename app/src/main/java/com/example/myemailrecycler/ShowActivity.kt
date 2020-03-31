@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import com.example.myemailrecycler.adapters.oval
@@ -36,11 +37,6 @@ class ShowActivity : AppCompatActivity() {
             actionMode = startSupportActionMode(object: ActionMode.Callback {
                 override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
                     when(item?.itemId){
-                        R.id.homeAsUp -> {
-                            onBackPressed()
-                            finish()
-                        }
-
                         R.id.action_delete -> {
                             DeleteConfirmDialog().show(supportFragmentManager, "CONFIRM_DELETE")
                         }
@@ -58,11 +54,12 @@ class ShowActivity : AppCompatActivity() {
                 }
 
                 override fun onDestroyActionMode(mode: ActionMode?) {
-
+                    finish()
+                    mode?.finish()
                 }
             })
-
         }
+
 
     }
 

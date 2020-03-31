@@ -4,6 +4,9 @@
     android:layout_height="wrap_content"
     android:background="@drawable/card_view_bg"
     xmlns:tools="http://schemas.android.com/tools"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:selectableItemBackground"
     tools:showIn="@layout/activity_main">
 
     <RelativeLayout

@@ -72,6 +72,11 @@ class EmailAdapter(val emails: MutableList<Email>) :RecyclerView.Adapter<EmailAd
         currentSelectedPosition = -1
     }
 
+    fun deleteEmail(position: Int){
+        emails.removeAt(position)
+        notifyDataSetChanged()
+    }
+
 
     var onItemClick: ((Int) -> Unit)? = null
     var onItemClickLong: ((Int) -> Unit)? = null
