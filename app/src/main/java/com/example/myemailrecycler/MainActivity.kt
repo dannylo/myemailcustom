@@ -1,5 +1,6 @@
 package com.example.myemailrecycler
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,8 +24,10 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var adapter: EmailAdapter;
+    private lateinit var adapter: EmailAdapter
     private var actionMode: ActionMode? = null
+    private var emailOpened: Int = -1;
+    private val emailRequest = 1;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +41,13 @@ class MainActivity : AppCompatActivity() {
         adapter.onItemClick = {
             if (adapter.selectedItems.isEmpty()){
                 var intent = Intent(this, ShowActivity::class.java)
-                val bundle = Bundle()
-                bundle.putParcelable("EMAIL", adapter.emails.get(it))
-                intent = intent.putExtras(bundle)
-                startActivity(intent)
+                    .apply {
+                        emailOpened = it
+                        val bundle = Bundle()
+                        bundle.putParcelable("EMAIL", adapter.emails.get(emailOpened))
+                        putExtras(bundle)
+                    }
+                startActivityForResult(intent, 1)
             } else {
                 enableActionMode(it)
             }
@@ -49,7 +55,6 @@ class MainActivity : AppCompatActivity() {
 
         adapter.onItemClickLong = {
             enableActionMode(it)
-
         }
 
         fab.setOnClickListener{
@@ -64,6 +69,16 @@ class MainActivity : AppCompatActivity() {
             )
 
         helper.attachToRecyclerView(recycler_view_main)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == emailRequest)
+            if(resultCode == Activity.RESULT_OK){
+                    Log.i("position", ""+ emailOpened)
+                    adapter.deleteEmail(emailOpened)
+                    Toast.makeText(this, "The e-mail was removed.", Toast.LENGTH_SHORT).show()
+                    emailOpened = -1
+            }
     }
 
     private fun enableActionMode(position: Int){
@@ -106,6 +121,9 @@ class MainActivity : AppCompatActivity() {
             actionMode?.invalidate()
         }
     }
+
+
+
     fun addEmail(){
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale("pt", "BR")).parse(
             Fakeit.dateTime().dateFormatter()

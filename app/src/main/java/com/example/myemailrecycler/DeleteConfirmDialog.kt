@@ -11,14 +11,15 @@ import java.lang.IllegalStateException
 class DeleteConfirmDialog :DialogFragment(){
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return activity?.let {
+        var showActivity = activity as ShowActivity
+        return showActivity?.let {
             val builderDialog = AlertDialog.Builder(it)
-
             builderDialog
                 .setMessage("Are you sure?")
                 .setPositiveButton("Yes", DialogInterface.OnClickListener{
                     dialog, id ->
                     Log.i("DIALOG", "TODO - REMOVE THIS EMAIL.")
+                        showActivity.performEmailRemoving()
                         dialog.cancel()
 
                 })

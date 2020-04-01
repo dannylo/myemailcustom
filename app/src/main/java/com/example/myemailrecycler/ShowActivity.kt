@@ -1,10 +1,14 @@
 package com.example.myemailrecycler
 
+import android.app.Activity
+import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import com.example.myemailrecycler.adapters.oval
@@ -14,6 +18,8 @@ import kotlinx.android.synthetic.main.activity_show.*
 class ShowActivity : AppCompatActivity() {
 
     private var actionMode: ActionMode? = null
+    private var position: Int = -1
+    private var decisionRemove: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +28,7 @@ class ShowActivity : AppCompatActivity() {
 
 
         val email = intent.extras?.getParcelable<Email>("EMAIL")
+        position = intent.getIntExtra("position", -1)
 
         icon_show.text = email?.user?.first().toString()
         subject_show.text = email?.subject
@@ -60,7 +67,12 @@ class ShowActivity : AppCompatActivity() {
             })
         }
 
+    }
 
+    fun performEmailRemoving(){
+        var intent = Intent()
+        setResult(Activity.RESULT_OK, intent)
+        finish()
     }
 
 }
